@@ -132,9 +132,13 @@ def write_book(
     page_texts = ocr_pages(doc) if book == 3 else [page.get_text("text").strip() for page in doc]
     source_root.mkdir(parents=True, exist_ok=True)
     source_path = source_root / f"book-{book}.txt"
+    snapshot_pages = [
+        "\n".join(line.rstrip() for line in text.splitlines()) for text in page_texts
+    ]
     source_path.write_text(
         "\n\n".join(
-            f"===== 第 {index + 1} 页 =====\n{text}" for index, text in enumerate(page_texts)
+            f"===== 第 {index + 1} 页 =====\n{text}"
+            for index, text in enumerate(snapshot_pages)
         ) + "\n",
         encoding="utf-8",
     )
