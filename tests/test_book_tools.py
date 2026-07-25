@@ -63,6 +63,11 @@ class BookToolsTest(unittest.TestCase):
         markdown = "正文\n<!-- source-image-start -->\n<details>影像</details>\n<!-- source-image-end -->\n结尾"
         self.assertEqual(tools.strip_audit_blocks(markdown), "正文\n\n结尾")
 
+    def test_markdown_visible_text_removes_inline_page_comment(self):
+        tools = load_module()
+        markdown = "前半句<!-- 原书第 2 页 -->后半句。"
+        self.assertEqual(tools.markdown_visible_text(markdown), "前半句后半句。")
+
 
 if __name__ == "__main__":
     unittest.main()

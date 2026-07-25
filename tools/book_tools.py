@@ -8,6 +8,7 @@ from typing import Iterable, Sequence
 
 IMAGE_LINE = re.compile(r"^\s*!\[[^\]]*\]\([^)]*\)\s*$")
 HEADING_PREFIX = re.compile(r"^\s{0,3}#{1,6}\s+")
+HTML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
 AUDIT_BLOCK = re.compile(
     r"<!-- source-image-start -->.*?<!-- source-image-end -->", re.DOTALL
 )
@@ -27,6 +28,7 @@ def as_heading(text: str, level: int) -> str:
 
 def markdown_visible_text(markdown: str) -> str:
     """Return source-visible text after removing conversion-only Markdown."""
+    markdown = HTML_COMMENT.sub("", markdown)
     visible = []
     for line in markdown.splitlines():
         if IMAGE_LINE.match(line):
